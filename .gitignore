@@ -1,0 +1,80 @@
+# Arquivos de ambiente
+.env
+.env.local
+.env.production
+
+# Logs
+*.log
+logs/
+error.log
+access.log
+
+# Cache
+cache/
+tmp/
+temp/
+
+# Uploads
+uploads/
+files/
+
+# Dependências
+vendor/
+node_modules/
+composer.lock
+package-lock.json
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Sistema Operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Backup files
+*.bak
+*.backup
+*.sql.gz
+
+# Arquivos de configuração específicos
+config/local.php
+config/production.php
+
+# Arquivos temporários
+*.tmp
+*.temp
+
+# Arquivos de sessão
+sessions/
+
+# Certificados e chaves
+*.pem
+*.key
+*.crt
+*.p12
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+
+# Google Cloud
+.gcloudignore
+service-account.json
+
+# Arquivos de build
+build/
+dist/
+public/build/
+
+# Coverage reports
+coverage/
+*.coverage
+
+# Arquivos de teste
+phpunit.xml
+.phpunit.result.cache
