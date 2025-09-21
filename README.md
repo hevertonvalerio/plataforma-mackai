@@ -45,23 +45,39 @@ Esta versão unificada oferece uma experiência completa para a Liga Acadêmica 
 ## 📁 Estrutura do Projeto
 
 ```
-op-3/
+plataforma-mackai/
 ├── 📁 public/                 # Arquivos públicos
 │   ├── 🚪 index.php          # Ponto de entrada (Router)
 │   ├── 📁 assets/            # CSS, JS, imagens
 │   │   ├── 📁 css/           # Estilos
-│   │   ├── 📁 js/            # JavaScript
-│   │   └── 📁 images/        # Imagens
+│   │   │   └── main.css      # CSS principal
+│   │   └── 📁 js/            # JavaScript
+│   │       └── main.js       # JS principal
 │   └── ⚙️ .htaccess          # Configurações Apache
 ├── 📁 src/                   # Código fonte
 │   ├── 📁 controllers/       # Controladores MVC
+│   │   ├── BaseController.php
+│   │   ├── HomeController.php
+│   │   ├── MeetingsController.php
+│   │   ├── AboutController.php
+│   │   ├── PortfolioController.php
+│   │   └── ContactController.php
 │   ├── 📁 models/           # Modelos de dados
+│   │   ├── BaseModel.php
+│   │   ├── Group.php
+│   │   ├── Meeting.php
+│   │   └── Period.php
 │   ├── 📁 views/            # Templates PHP
 │   │   ├── 📁 layout/       # Layout base
+│   │   │   └── base.php
 │   │   ├── 📁 home/         # Página inicial
-│   │   ├── 📁 meetings/     # Encontros
-│   │   └── 📁 errors/       # Páginas de erro
+│   │   │   └── index.php
+│   │   └── 📁 meetings/     # Encontros
+│   │       ├── index.php
+│   │       └── show.php
 │   └── 📁 config/           # Configurações
+│       ├── database.php     # Config do banco
+│       └── routes.php       # Rotas da aplicação
 ├── 📁 database/             # Scripts SQL
 │   ├── 📄 schema.sql        # Estrutura do banco
 │   └── 📄 seeds.sql         # Dados iniciais
@@ -71,41 +87,114 @@ op-3/
 ├── 📁 docs/                 # Documentação
 │   ├── 📖 development.md    # Guia de desenvolvimento
 │   └── 🚀 deployment.md     # Guia de deploy
+├── 📄 .env.example          # Exemplo de variáveis de ambiente
+├── 📄 .env                  # Configurações locais (não versionado)
+├── 📄 .gitignore            # Arquivos ignorados pelo Git
 └── 📄 README.md             # Este arquivo
 ```
 
 ## ⚡ Início Rápido
 
-### 🔧 Desenvolvimento Local
+### 🔧 Desenvolvimento Local (Windows)
 
-1. **Clone o repositório**
+#### **Pré-requisitos**
+- Windows 10/11
+- Privilégios de administrador
+
+#### **1. Instalar XAMPP**
+1. Baixe o XAMPP: https://www.apachefriends.org/
+2. Execute o instalador como administrador
+3. Selecione: Apache, MySQL, PHP, phpMyAdmin
+4. Instale na pasta padrão `C:\xampp`
+
+#### **2. Clone o repositório**
 ```bash
-git clone https://github.com/rafavidal1709/mack-ai-plataforma.git
-cd mack-ai-plataforma/op-3
+git clone https://github.com/hevertonvalerio/plataforma-mackai.git
+cd plataforma-mackai
 ```
 
-2. **Configure o banco de dados**
+#### **3. Iniciar serviços**
+1. Abra o **XAMPP Control Panel** como administrador
+2. Clique em **Start** ao lado de **Apache** e **MySQL**
+3. Aguarde os status ficarem verdes
+
+#### **4. Configurar banco de dados**
 ```bash
-mysql -u root -p
-CREATE DATABASE mackai CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+# Criar banco de dados
+C:\xampp\mysql\bin\mysql.exe -u root -e "CREATE DATABASE mackai CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+
+# Importar estrutura
+Get-Content database\schema.sql | C:\xampp\mysql\bin\mysql.exe -u root mackai
+
+# Importar dados iniciais
+Get-Content database\seeds.sql | C:\xampp\mysql\bin\mysql.exe -u root mackai
+```
+
+#### **5. Configurar ambiente**
+```bash
+# Copiar arquivo de configuração
+copy .env.example .env
+# O arquivo .env já está configurado corretamente para desenvolvimento local
+```
+
+#### **6. Executar aplicação**
+```bash
+# Opção A: Servidor PHP built-in
+C:\xampp\php\php.exe -S localhost:8080 -t public
+
+# Opção B: Via Apache (copie projeto para C:\xampp\htdocs\)
+# Acesse: http://localhost/plataforma-mackai/public
+```
+
+#### **7. Acessar aplicação**
+```
+http://localhost:8080
+```
+
+### 🐛 Solução de Problemas
+
+#### **❌ "php não é reconhecido"**
+Use o caminho completo: `C:\xampp\php\php.exe`
+
+#### **❌ "mysql não é reconhecido"**
+Use: `C:\xampp\mysql\bin\mysql.exe`
+
+#### **❌ Erro de conexão com banco**
+- Verifique se MySQL está rodando no XAMPP Control Panel
+- Confirme que o banco `mackai` foi criado
+
+#### **❌ Porta 8080 ocupada**
+Mude para outra porta: `C:\xampp\php\php.exe -S localhost:8081 -t public`
+
+### 🔧 Desenvolvimento Linux/Mac
+
+1. **Instalar dependências**
+```bash
+# Ubuntu/Debian
+sudo apt update
+sudo apt install php mysql-server
+
+# macOS (com Homebrew)
+brew install php mysql
+```
+
+2. **Clone e configure**
+```bash
+git clone https://github.com/hevertonvalerio/plataforma-mackai.git
+cd plataforma-mackai
+cp .env.example .env
+```
+
+3. **Configurar banco**
+```bash
+mysql -u root -p -e "CREATE DATABASE mackai CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 mysql -u root -p mackai < database/schema.sql
 mysql -u root -p mackai < database/seeds.sql
 ```
 
-3. **Configure as variáveis de ambiente**
-```bash
-cp .env.example .env
-# Edite o arquivo .env com suas configurações
-```
-
-4. **Execute o servidor**
+4. **Executar**
 ```bash
 php -S localhost:8080 -t public
-```
-
-5. **Acesse a aplicação**
-```
-http://localhost:8080
 ```
 
 ### 🐳 Com Docker
